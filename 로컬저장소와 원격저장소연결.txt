@@ -1,0 +1,16 @@
+git init 이기억장소에 기억한다. 먼저 이거써라
+git2020파일안에  .git이 생긴다.
+git이란 형상관리툴
+레포가 자기 이름  java20200205
+
+로컬저장소와 원격저장소 연결 하기
+D드라이브에 git2020폴더(로컬)를 추가하였고
+git init으로 초기화한 상태임
+아래 명령어를 실행시킴.
+git remote add origin https://github.com/rhrlwlfk/java20200205.git
+
+repo이름이 test59임.
+
+실행하고 나면 확인해볼꺼임
+git remote-v  
+
