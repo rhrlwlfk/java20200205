@@ -1,0 +1,212 @@
+이제 GitHub의 원격 저장소로 이동해서 바로 파일을 변경하겠습니다.
+저장소의 파일 목록에서 변경하려는 hello.py를 클릭
+파일의 내용을 편집하는 화면으로 넘어가게 되면 오른쪽 위에 있는 수정을 클릭합니다.
+파일의 이름은 물론 내용까지 전부 수정할 수 있습니다.  
+
+//파일이름은 물론 내용까지 전부 수정할 수 있다.
+//아래에 위치한 'Commit changes' 항목 바로 아래 알맞은 커밋 메시지를 입력 한 후 <Commit changes>를 클릭합니다.
+
+Update파일이름 : 파일이름의 수정 내역을 남길 커밋 메시지를 입력함.
+Add an optional extended description : 자세한 설명을 남겨야 할 경우 추가로 커밋과 관련된 설명을 입력합니다.
+Commit directly to the master branch : master 브랜치에 바로 커밋할 때 선택합니다.
+Create a new branch for this commit and start a pull request : 풀 리퀘스트를 위한 새로운 브랜치를 생성할 때 선택
+
+이제 로컬 저장소의 같은 파일을 수정하고 커밋해 볼 차례입니다.
+Vm hello.py명령을 실행하고 로컬 저장소의 파일을 수정합니다.
+ESC - :wq 하고 빠져 나온다.
+그리고  git commit -a -m "hello.py modified on Local repository" 를 실행해 커밋합니다.
+Git status 명령을 실행해 별 이상이 없는지 확인합니다.
+그럼 로컬 저장소의 작업을 푸시해 보도록 하겠습니다.
+Git push origin master 명령 실행
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ vim hello.py
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git commit -a -m "hello.py modified on Local repository"
+[master 5cf6f85] hello.py modified on Local repository
+ 1 file changed, 2 insertions(+)
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ Git push origin master
+To https://github.com/kimjoy70/lab20200115.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'https://github.com/kimjoy70/lab20200115.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+하지만 ![rejected]~ 라는 메시지가 나타나면서 실패할 겁니다.
+힌트에서는 git pull 명령을 사용해 보라고 알려주지만 여기서는 페치와 병합을 이용합니다.
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git fetch
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/kimjoy70/lab20200115
+   a741207..a0aef92  master     -> origin/master
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+아직은 별 이상이 없다.
+
+원격 저장소의 master브랜치와 로컬 저장소의 master브랜치를 병합한 다음 다시 푸시해야 합니다.
+Git branch -a 명령을 실행해서 현재 어떤 브랜치가 있는지 일단 확인해 봄니다.
+모든 로컬 저장소와 원격 저장소의 브랜치 정보를 볼 수 있습니다.
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git branch -a
+* master
+  remotes/origin/master
+
+로컬 저장소의 master브랜치에 원격 저장소의 origin/master 브랜치를 병합하면 될 것입니다.
+
+참고로 브랜치를 입력해야 할 때 git merge 명령을 입력하고 [Space Bar]키를 눌러 한 칸 띄어 쓰기한 후
+[Tab] 키를 누르면 어떤 브랜치들이 병합 대상이 될 수 있는지 알 수 있습니다.
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git merge
+FETCH_HEAD      HEAD            master          origin/master
+
+그럼 git merge origin/master 명령을 실행해 보도록 하겠습니다.
+이 명령으로 로컬 저장소의 master브랜치와 원격 저장소의 master브랜치를 병합할 수 있습니다.
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git merge origin/master
+Auto-merging hello.py
+CONFLICT (content): Merge conflict in hello.py
+Automatic merge failed; fix conflicts and then commit the result.
+충돌이 발생했으니 수정할 차례입니다.
+여기서는 git diff 브랜치 이름 명령을 이용해 봄니다.
+Git diff 명령은 로컬 저장소의 브랜치와 원격 저장소 브랜치 사이에 어떤 차이점이 있는지 미리 알아보는 
+명령입니다.
+이를 통해 변경 사항을 정확하게 확인한 후 병합을 실행할 수 있죠.
+만약 git pull 명령을 이용했다면 페치와 병합을 자동으로 수행해버려서 어떤 변경 사항이 있는지 알기가 
+어려워 집니다.
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master|MERGING)
+$ git diff
+diff --cc hello.py
+index 8639bae,8eae362..0000000
+--- a/hello.py
++++ b/hello.py
+@@@ -1,4 -1,4 +1,9 @@@
+++<<<<<<< HEAD
+ +//로컬 저장소의 같은 파일을 수정하고 커밋해 볼 차례입니다.
+ +//vim hello.py를 실행하고 로컬 저장소의 내용을 수정합니다.
+++=======
++ //파일이름은 물론 내용까지 전부 수정할 수 있다.
++ //아래에 위치한 'Commit changes' 항목 바로 아래 알맞은 커밋 메시지를 입력 한
+후 <Commit changes>를 클릭합니다.
+++>>>>>>> origin/master
+  print("Hello")
+  print("python test")
+
+충돌내역을 확인 할 수 있습니다.
+이제 다음 명령으로 커밋합니다. 
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master|MERGING)
+$ git commit -a -m "conflict resolved GitHub"
+[master 487df10] conflict resolved GitHub
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git push origin master
+Enumerating objects: 10, done.
+Counting objects: 100% (10/10), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (6/6), 820 bytes | 410.00 KiB/s, done.
+Total 6 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), done.
+To https://github.com/kimjoy70/lab20200115.git
+   a0aef92..487df10  master -> master
+
+푸시를 완료했습니다.
+
+마지막으로 GitHub원격 저장소를 확인해 제대로 푸시되었는지 확인합니다.
+웹페이지에서 새로고침을 눌러 제대로 푸시되었는지 확인합니다.
+위 충돌 메시지를 바꾸지 않아서 충돌된 내용이 그대로 보입니다.
+<<<<<<< HEAD	
+	//로컬 저장소의 같은 파일을 수정하고 커밋해 볼 차례입니다.
+	//vim hello.py를 실행하고 로컬 저장소의 내용을 수정합니다.
+	=======
+	//파일이름은 물론 내용까지 전부 수정할 수 있다.
+	//아래에 위치한 'Commit changes' 항목 바로 아래 알맞은 커밋 메시지를 입력 한 후 <Commit changes>를 클릭합니다.
+	>>>>>>> origin/master
+	print("Hello")
+	print("python test")
+
+출처: <https://github.com/kimjoy70/lab20200115/blob/master/hello.py> 
+
+원격 저장소 웹페이지의 [Insights] -> [Network]를 선택해서 로컬 저장소에서 작업한 것이 반영되어 
+현재의 master 브랜치를 만든 것을 확인할 수 있습니다.
+
+마지막으로 git pull 명령도 실습해 봅시다.
+GitHub의 원격 저장소에서 출력 코드 하나를 추가 합니다.
+print("Tell my world")
+라고 추가한 뒤 "Commit changes" 창에서 알맞은 커밋 메시지(GitHub for git pull)을 입력한 후
+<Commit changes>를 클릭합니다.
+이제 원격 저장소의 내용을 가져올 차례입니다.
+Git pull origin master
+명령이 실행되면서 변경 내용을 가져오고 자동으로 병합합니다.
+Vim hello.py 해보면 
+<<<<<<< HEAD
+//로컬 저장소의 같은 파일을 수정하고 커밋해 볼 차례입니다.
+//vim hello.py를 실행하고 로컬 저장소의 내용을 수정합니다.
+=======
+//파일이름은 물론 내용까지 전부 수정할 수 있다.
+//아래에 위치한 'Commit changes' 항목 바로 아래 알맞은 커밋 메시지를 입력 한 후 <Commit changes>를 클릭합니다.
+>>>>>>> origin/master
+print("Hello")
+print("python test")
+
+GitHub에서 수정한 내용이 반영되어 있지 않습니다.
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ vim hello.py
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git pull origin master
+remote: Enumerating objects: 5, done.
+remote: Counting objects: 100% (5/5), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 1), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/kimjoy70/lab20200115
+ * branch            master     -> FETCH_HEAD
+   487df10..ba4fb87  master     -> origin/master
+Updating 487df10..ba4fb87
+Fast-forward
+ hello.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ cat hello.py
+<<<<<<< HEAD
+//로컬 저장소의 같은 파일을 수정하고 커밋해 볼 차례입니다.
+//vim hello.py를 실행하고 로컬 저장소의 내용을 수정합니다.
+=======
+//파일이름은 물론 내용까지 전부 수정할 수 있다.
+//아래에 위치한 'Commit changes' 항목 바로 아래 알맞은 커밋 메시지를 입력 한 후 <Commit changes>를 클릭합니다.
+>>>>>>> origin/master
+print("Hello")
+print("python test")
+print("Tell my world")
+
+이제 반영되었습니다.
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git commit
+On branch master
+nothing to commit, working tree clean
+
+kimjoy@DESKTOP-A8G4R8R MINGW64 /c/git_2020 (master)
+$ git merge
+fatal: No remote for the current branch.
+
+실제 git commit과 git merge 를 해도 이미 작업할 것이 없다는 메시지를 확인할 수 있습니다.
